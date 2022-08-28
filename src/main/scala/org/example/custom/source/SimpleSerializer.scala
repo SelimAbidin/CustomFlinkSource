@@ -5,12 +5,12 @@ import org.apache.flink.core.io.SimpleVersionedSerializer
 
 import java.io.{ByteArrayInputStream, ObjectInputStream, ObjectOutputStream}
 
-class SimpleSerializer[T] extends SimpleVersionedSerializer[T]{
+class SimpleSerializer[T] extends SimpleVersionedSerializer[T] {
   override def getVersion: Int = 1
 
   override def serialize(obj: T): Array[Byte] = {
-    val boas:ByteArrayOutputStream = new ByteArrayOutputStream();
-    val oos:ObjectOutputStream = new ObjectOutputStream(boas)
+    val boas: ByteArrayOutputStream = new ByteArrayOutputStream();
+    val oos: ObjectOutputStream = new ObjectOutputStream(boas)
     oos.writeObject(obj)
     boas.toByteArray
   }

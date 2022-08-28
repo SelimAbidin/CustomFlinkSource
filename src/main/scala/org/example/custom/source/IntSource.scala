@@ -11,7 +11,8 @@ class IntSource extends Source[Int, IntRangeSplit, EnumeratorState] {
 
   override def createEnumerator(enumContext: SplitEnumeratorContext[IntRangeSplit]): SplitEnumerator[IntRangeSplit, EnumeratorState] = new IntEnumerator(enumContext)
 
-  override def restoreEnumerator(enumContext: SplitEnumeratorContext[IntRangeSplit], checkpoint: EnumeratorState): SplitEnumerator[IntRangeSplit, EnumeratorState] = ???
+  // Enumerator is initialized with previous enumerator state.
+  override def restoreEnumerator(enumContext: SplitEnumeratorContext[IntRangeSplit], checkpoint: EnumeratorState): SplitEnumerator[IntRangeSplit, EnumeratorState] = new IntEnumerator(enumContext, checkpoint)
 
   override def getSplitSerializer: SimpleVersionedSerializer[IntRangeSplit] = new SimpleSerializer[IntRangeSplit]
 

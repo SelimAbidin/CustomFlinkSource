@@ -5,16 +5,16 @@ import org.apache.flink.api.connector.source.{SplitEnumerator, SplitEnumeratorCo
 import java.util
 import scala.collection.JavaConverters._
 
-class IntEnumerator(context:SplitEnumeratorContext[IntRangeSplit],  state: EnumeratorState) extends SplitEnumerator[IntRangeSplit, EnumeratorState]{
+class IntEnumerator(context: SplitEnumeratorContext[IntRangeSplit], state: EnumeratorState) extends SplitEnumerator[IntRangeSplit, EnumeratorState] {
 
-  def this(context:SplitEnumeratorContext[IntRangeSplit]) = {
+  def this(context: SplitEnumeratorContext[IntRangeSplit]) = {
     this(context, EnumeratorState(0))
   }
 
   override def start(): Unit = {}
 
   override def handleSplitRequest(subtaskId: Int, requesterHostname: String): Unit = {
-
+    // returned splits are prioritized
     if (state.deadSplits.size > 0) {
       val split = state.deadSplits.apply(0)
       state.deadSplits = state.deadSplits.drop(1)
