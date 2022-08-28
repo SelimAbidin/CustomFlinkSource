@@ -10,15 +10,17 @@ import scala.collection.JavaConverters._
 class IntRangeReader(context:SourceReaderContext) extends SourceReader[Int, IntRangeSplit]{
   private var currentSplit: IntRangeSplit = null;
   private var availability: CompletableFuture[Void] = CompletableFuture.completedFuture(null)
-  private var currentValue = 0
   override def start(): Unit = {}
 
   override def pollNext(output: ReaderOutput[Int]): InputStatus = {
 
-    if (currentSplit != null && currentValue < currentSplit.until) {
-      output.collect(currentValue)
+    if (currentSplit != null && currentSplit.currentValue < currentSplit.until) {
+      output.collect(currentSplit.currentValue)
       Thread.sleep(100)
-      currentValue+=1
+      if (currentSplit.currentValue == 5) {
+        throw new Error("Current Value is 5")
+      }
+      currentSplit.currentValue+=1
       InputStatus.MORE_AVAILABLE
     } else {
       if (availability.isDone) {
@@ -38,7 +40,6 @@ class IntRangeReader(context:SourceReaderContext) extends SourceReader[Int, IntR
 
   override def addSplits(splits: util.List[IntRangeSplit]): Unit = {
     currentSplit = splits.get(0)
-    currentValue = currentSplit.from
     availability.complete(null)
   }
 

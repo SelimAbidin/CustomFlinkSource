@@ -44,7 +44,7 @@ object SourceExample {
 //    env.addSource(new RichIntSource())(TypeInformation.of(classOf[Long])).setParallelism(10).print().setParallelism(1)
 
     env.fromSource(new IntSource(), WatermarkStrategy.noWatermarks(), "")(TypeInformation.of(classOf[Int]))
-      .setParallelism(3)
+      .setParallelism(1)
       .print()
       .setParallelism(1)
 
